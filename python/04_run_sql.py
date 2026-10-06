@@ -1,42 +1,51 @@
 from pathlib import Path
 import duckdb
 
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 PROCESSED_DIR = BASE_DIR / "data" / "processed"
 SQL_DIR = BASE_DIR / "sql"
 
-
 con = duckdb.connect()
 
+# 주문 상세 데이터
 con.execute(f"""
     CREATE OR REPLACE VIEW order_details AS
     SELECT *
     FROM read_csv_auto('{PROCESSED_DIR / "order_details.csv"}')
 """)
 
+# 고객-주문 데이터
+con.execute(f"""
+    CREATE OR REPLACE VIEW orders_customers AS
+    SELECT *
+    FROM read_csv_auto('{PROCESSED_DIR / "orders_customers.csv"}')
+""")
 
-sql_file = SQL_DIR / "01_sales_kpi.sql"
-sql = sql_file.read_text(encoding="utf-8")
+# sql 폴더의 SQL 파일을 순서대로 실행
+sql_files = sorted(SQL_DIR.glob("*.sql"))
 
+for sql_file in sql_files:
 
-queries = [
-    query.strip()
-    for query in sql.split(";")
-    if query.strip()
-]
+    print("\n" + "#" * 70)
+    print(f"SQL FILE: {sql_file.name}")
+    print("#" * 70)
 
+    sql = sql_file.read_text(encoding="utf-8")
 
-for index, query in enumerate(queries, start=1):
+    queries = [
+        query.strip()
+        for query in sql.split(";")
+        if query.strip()
+    ]
 
-    print("\n" + "=" * 70)
-    print(f"KPI {index}")
-    print("=" * 70)
+    for index, query in enumerate(queries, start=1):
 
-    result = con.execute(query)
+        print("\n" + "=" * 70)
+        print(f"KPI {index}")
+        print("=" * 70)
 
-    print(result.fetchall())
-    print()
-
+        result = con.execute(query)
+        print(result.fetchall())
+        print()
 
 con.close()
