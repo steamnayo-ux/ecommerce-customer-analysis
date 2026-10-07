@@ -69,11 +69,20 @@ print(
 # ============================================================
 # 4. 월별 매출 데이터
 # ============================================================
+#
+# [수정] month를 "2017-01" 문자열이 아니라
+# 해당 월의 1일 날짜(2017-01-01)로 저장한다.
+#
+# 이유:
+# "2017-01" 형태는 Tableau가 날짜가 아닌 텍스트로 읽어서
+# X축을 '월'로 바꾸는 메뉴가 나타나지 않는다.
+# "2017-01-01" 형태는 Tableau가 자동으로 날짜로 인식한다.
+#
 
 delivered["month"] = (
     delivered["order_purchase_timestamp"]
     .dt.to_period("M")
-    .astype(str)
+    .dt.to_timestamp()
 )
 
 
@@ -98,6 +107,7 @@ monthly_sales.to_csv(
     DASHBOARD_DIR / "monthly_sales.csv",
     index=False,
     encoding="utf-8-sig",
+    date_format="%Y-%m-%d",
 )
 
 
