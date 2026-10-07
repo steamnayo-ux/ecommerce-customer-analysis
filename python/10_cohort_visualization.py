@@ -42,7 +42,34 @@ print("=" * 60)
 print("Cohort Retention 시각화 시작")
 print("=" * 60)
 
-print(f"Cohort 수: {len(retention):,}")
+print(f"전체 Cohort 수: {len(retention):,}")
+
+
+# ============================================================
+# 2-1. 표본이 적은 초기 Cohort 제외
+# ============================================================
+#
+# 2016-09, 2016-10, 2016-12 Cohort는 서비스 초기 데이터로
+# 고객 수가 1~262명 수준이다.
+#
+# 특히 2016-09, 2016-12 Cohort는 고객이 1명뿐이어서
+# 그 고객이 다시 구매하면 유지율이 100%로 표시되고,
+# 히트맵 전체의 색상 범위를 왜곡한다.
+#
+# 따라서 2017-01 이후 Cohort만 시각화한다.
+# (분석 데이터 cohort_retention.csv 자체는 수정하지 않는다.)
+#
+
+MIN_COHORT_MONTH = "2017-01"
+
+excluded = retention.index[retention.index < MIN_COHORT_MONTH]
+
+retention = retention.loc[
+    retention.index >= MIN_COHORT_MONTH
+]
+
+print(f"제외한 Cohort: {', '.join(excluded)}")
+print(f"시각화 Cohort 수: {len(retention):,}")
 print(f"최대 관찰 개월: {retention.shape[1] - 1}")
 
 
