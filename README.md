@@ -25,6 +25,18 @@
 - **코호트 분석에서도 같은 패턴이 확인됩니다.** 표본이 충분한 2017-01 ~ 2018-07 코호트의 첫 구매 1개월 후 재구매 비율은 0.2~0.7% 수준(평균 약 0.5%)입니다.
 - **고가 이탈 고객이 가장 큰 기회입니다.** 한 번 높은 금액을 구매하고 오래 구매하지 않은 고객 13,646명이 전체 구매금액의 약 28.7%를 차지합니다.
 
+## Tableau 대시보드
+
+[![Tableau 대시보드](images/dashboard.png)](https://public.tableau.com/app/profile/.37892861/viz/OlistRFM_17914399552140/OlistRFM?publish=yes)
+
+[Tableau Public에서 인터랙티브하게 보기](https://public.tableau.com/app/profile/.37892861/viz/OlistRFM_17914399552140/OlistRFM?publish=yes)
+
+- **월별 매출**: 2017년 1월 이후 기준 매출 추이
+- **고객 구매 유형**: 1회 구매 고객(97.0%)과 재구매 고객(3.0%) 비교
+- **RFM 세그먼트별 고객 비율 vs 구매금액 비율**: 고객 수 대비 매출 기여도 확인
+
+> 월별 매출은 2017년 1월 이후 기준이고, 고객·RFM 지표는 전체 배송 완료(delivered) 주문 기준입니다. RFM 금액은 상품 금액 기준입니다.
+
 ## RFM 고객 세그먼트
 
 1회 구매 고객이 약 97%라서 일반적인 5분위 방식만으로는 고객이 구분되지 않습니다. 먼저 **재구매 여부(Frequency)** 로 나눈 뒤, 그 안에서 **최근성(Recency)** 과 **구매금액(Monetary)** 으로 세분화했습니다. 모든 고객은 정확히 하나의 세그먼트에 속합니다.
@@ -72,7 +84,7 @@
 
 - **Python** (pandas, matplotlib): 데이터 전처리, RFM·Cohort 분석, 시각화
 - **DuckDB / SQL**: 매출·고객·상품 KPI 분석
-- **Tableau**: 대시보드
+- **Tableau Public**: 대시보드
 - **Git / GitHub**: 버전 관리
 
 ## 폴더 구조
